@@ -9,6 +9,12 @@ public class Hunter : MonoBehaviour
     void Start()
     {
         blackboard = FindObjectOfType<Blackboard>();
+        
+        if (blackboard == null)
+        {
+            Debug.Log("Blackboard not found in the scene.");
+            return;
+        }
         blackboard.SetValue("Target", null); // Initial target is null
         blackboard.SetValue("IsHunter", true);
         
@@ -18,9 +24,22 @@ public class Hunter : MonoBehaviour
 
     void Update()
     {
+        if (blackboard == null)
+        {
+            Debug.Log("Blackboard is null.");
+            return;
+        }
+
+        Renderer renderer = GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            Debug.LogError("Renderer component not found on the Hunter.");
+            return;
+        }
+
         movementStrategy.Move(transform, blackboard);
-        colorChangeStrategy.ChangeColor(GetComponent<Renderer>(), blackboard);
-        
+        colorChangeStrategy.ChangeColor(renderer, blackboard);
+
         CheckForPrey();
     }
 
