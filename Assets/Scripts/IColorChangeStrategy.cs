@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IColorChangeStrategy 
+public interface IColorChangeStrategy
 {
     void ChangeColor(Renderer renderer, Blackboard blackboard);
 }

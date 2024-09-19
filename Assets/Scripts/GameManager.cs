@@ -2,24 +2,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject hunterPrefab;
+    public GameObject preyPrefab;
+    public float distanceThreshold = 5f;
+    public float speed = 2f;
+
     private Blackboard blackboard;
 
     void Start()
     {
         blackboard = FindObjectOfType<Blackboard>();
-        InvokeRepeating("RandomizeColorChangeThreshold", 1f, 2f);
-        InvokeRepeating("ChangeAIState", 5f, 10f);    
+        blackboard.SetValue("DistanceThreshold", distanceThreshold);
+        blackboard.SetValue("Speed", speed);
+
+        CreateHuntersAndPreys();
     }
 
-    void RandomizeColorChangeThreshold()
+    private void CreateHuntersAndPreys()
     {
-        float newThreshold = Random.Range(0f, 1f);
-        blackboard.SetValue("ColorChangeThreshold", newThreshold);
-    }
+        // Create a hunter and a prey for demonstration
+        GameObject hunter = Instantiate(hunterPrefab, new Vector3(-10, 0, 0), Quaternion.identity);
+        GameObject prey = Instantiate(preyPrefab, new Vector3(10, 0, 0), Quaternion.identity);
 
-    void ChangeAIState()
-    {
-        string newState = Random.value > 0.5f ? "Attack" : "Flee";
-        blackboard.SetValue("AIState", newState);
+        blackboard.SetValue("Target", prey); // Set the prey as the target for the hunter
     }
 }
