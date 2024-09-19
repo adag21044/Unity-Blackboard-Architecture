@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class BlackBoardController : MonoBehaviour
 {
-    private Blackboard blackboard;
+    private Blackboard _blackboard;
 
     private void Start()
     {
-        blackboard = new Blackboard();
-        
-        Expert[] experts = FindObjectsOfType<Expert>();
+        _blackboard = new Blackboard();
 
-        foreach(Expert expert in experts)
+        foreach (var expert in FindObjectsOfType<Expert>())
         {
-            expert.Initialize(blackboard);
+            expert.Initialize(_blackboard);
         }
     }
 }

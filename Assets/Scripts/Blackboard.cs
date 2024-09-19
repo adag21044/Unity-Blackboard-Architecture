@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
 
-public class Blackboard 
+public class Blackboard
 {
-    private Dictionary<string, object> _data = new Dictionary<string, object>();
-    public event Action OnDataChanged;
+    private readonly Dictionary<string, object> _data = new Dictionary<string, object>();
+    public event Action<string> OnDataChanged;
 
-    public void SetValue(string key, object value)
+    public void SetValue<T>(string key, T value)
     {
         _data[key] = value;
-        OnDataChanged?.Invoke();
+        OnDataChanged?.Invoke(key);
     }
 
-    public object GetValue(string key)
+    public T GetValue<T>(string key)
     {
-        if(_data.ContainsKey(key))return _data[key];
+        if (_data.TryGetValue(key, out var value))
+        {
+            return (T)value;
+        }
         
-        return null;
+        return default;
     }
 }

@@ -2,32 +2,33 @@ using UnityEngine;
 
 public class PositionExpert : Expert
 {
-    public float speed = 2.0f;
-    public float stopDistance = 0.1f; // Küplerin hedefe yaklaştığında duracağı mesafe
+    public float Speed = 2.0f;
+    public float StopDistance = 0.1f;
 
     private Vector3? _targetPosition = null;
 
-    protected override void OnBlackboardDataChanged()
+    protected override void OnBlackboardDataChanged(string key)
     {
-        _targetPosition = blackboard.GetValue("targetPosition") as Vector3?;
+        if (key == "targetPosition")
+        {
+            _targetPosition = Blackboard.GetValue<Vector3>("targetPosition");
+        }
     }
 
     private void Update()
     {
         if (_targetPosition.HasValue)
         {
-            // Küpün hedefe olan mesafesini hesaplayın (sadece x ve z eksenlerinde)
             Vector3 targetPosition = _targetPosition.Value;
-            targetPosition.y = transform.position.y; // Y eksenini sabitleyin
+            targetPosition.y = transform.position.y;
 
             float distance = Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z), new Vector3(targetPosition.x, 0, targetPosition.z));
 
-            if (distance > stopDistance)
+            if (distance > StopDistance)
             {
-                // Küp hareket etmeye devam eder (sadece x ve z eksenlerinde)
                 Vector3 direction = (targetPosition - transform.position);
-                direction.y = 0; // Y eksenini sıfırla
-                transform.position += direction.normalized * speed * Time.deltaTime;
+                direction.y = 0;
+                transform.position += direction.normalized * Speed * Time.deltaTime;
             }
         }
     }

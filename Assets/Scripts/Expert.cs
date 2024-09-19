@@ -2,13 +2,13 @@ using UnityEngine;
 
 public abstract class Expert : MonoBehaviour
 {
-    protected Blackboard blackboard;
+    protected Blackboard Blackboard { get; private set; }
 
     public void Initialize(Blackboard blackboard)
     {
-        this.blackboard = blackboard;
+        Blackboard = blackboard;
         blackboard.OnDataChanged += OnBlackboardDataChanged;
     }
 
-    protected abstract void OnBlackboardDataChanged();
+    protected abstract void OnBlackboardDataChanged(string key);
 }
